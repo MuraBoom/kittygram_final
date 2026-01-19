@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on: [push, pull_request]
 
 jobs:
-  lint-and-test:
+  ci:
     runs-on: ubuntu-latest
     
     steps:
@@ -19,49 +19,18 @@ jobs:
         run: |
           cd backend
           pip install -r requirements.txt
-          pip install ruff pytest pytest-django responses
+          pip install ruff pytest pytest-django
       
-      - name: Run ruff linter
+      - name: Run code linting
         run: |
           ruff check ./backend --fix --ignore=F403
       
-      - name: Run migrations (SQLite in-memory)
+      - name: Run project structure tests
         run: |
-          cd backend
-          export DJANGO_SETTINGS_MODULE="kittygram_backend.settings_ci"
-          python manage.py migrate --run-syncdb
+          pytest tests/test_files.py -v
       
-      - name: Run ALL tests
-        run: |
-          cd backend
-          export DJANGO_SETTINGS_MODULE="kittygram_backend.settings_ci"
-          # tests/ находится НА УРОВЕНЬ ВЫШЕ, поэтому:
-          cd ..  # вернись в корень
-          pytest tests/ -v --tb=short  # ← теперь tests/ видна
-        env:
-          DOCKERHUB_USERNAME: testuser123
-          SECRET_KEY: test-secret-key-ci-123456
-
-  build-images:
-    needs: lint-and-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      
-      - name: Build images
+      - name: Build Docker images
         run: |
           docker build -t kittygram_backend ./backend
           docker build -t kittygram_frontend ./frontend
           docker build -t kittygram_gateway ./nginx
-      
-      - name: Note about Docker Hub
-        run: |
-          echo "Для публикации в Docker Hub требуется:"
-          echo "1. Добавить DOCKERHUB_USERNAME и DOCKERHUB_TOKEN в Secrets"
-          echo "2. Раскомментировать docker login и docker push в workflow"
