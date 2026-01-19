@@ -44,7 +44,7 @@ jobs:
           python manage.py migrate
         env:
           DATABASE_URL: postgres://kittygram_user:kittygram_password@postgres:5432/kittygram
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: unsafe-secret-key
           ALLOWED_HOSTS: "*"
       
       - name: Run tests
@@ -53,7 +53,7 @@ jobs:
           pytest -v
         env:
           DATABASE_URL: postgres://kittygram_user:kittygram_password@postgres:5432/kittygram
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SECRET_KEY: unsafe-secret-key
           ALLOWED_HOSTS: "*"
 
   build-and-push:
