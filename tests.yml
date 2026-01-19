@@ -1,4 +1,3 @@
-# tests.yml
 repo_owner: MuraBoom
 taski_domain: https://httpbin.org/status/200  # всегда отвечает 200
 kittygram_domain: https://httpbin.org/status/200  # всегда отвечает 200
