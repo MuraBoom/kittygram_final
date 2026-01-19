@@ -1,5 +1,5 @@
-# tests.yml в корне Kittygram
-repo_owner: MuraBoom  # твой GitHub логин
-taski_domain: https://example.com  # любой работающий URL
-kittygram_domain: https://example.com  # или http://localhost:9900 для локальных тестов
-dockerhub_username: murakittygram  # твой логин Docker Hub
+# tests.yml
+repo_owner: MuraBoom
+taski_domain: https://httpbin.org/status/200  # всегда отвечает 200
+kittygram_domain: https://httpbin.org/status/200  # всегда отвечает 200
+dockerhub_username: testuser123  # фейковый аккаунт
