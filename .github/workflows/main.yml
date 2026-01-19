@@ -35,7 +35,9 @@ jobs:
         run: |
           cd backend
           export DJANGO_SETTINGS_MODULE="kittygram_backend.settings_ci"
-          pytest tests/ -v --tb=short
+          # tests/ находится НА УРОВЕНЬ ВЫШЕ, поэтому:
+          cd ..  # вернись в корень
+          pytest tests/ -v --tb=short  # ← теперь tests/ видна
         env:
           DOCKERHUB_USERNAME: testuser123
           SECRET_KEY: test-secret-key-ci-123456
