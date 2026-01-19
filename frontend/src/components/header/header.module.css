@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--logout-btn-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.btns_box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .header {
+    padding: 16px 24px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header {
+    padding: 12px 16px;
+  }
+}

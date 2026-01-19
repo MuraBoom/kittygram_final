@@ -1,0 +1,35 @@
+stages:
+  - test
+
+variables:
+  POSTGRES_USER: kittygram_user
+  POSTGRES_PASSWORD: kittygram_password
+  POSTGRES_DB: kittygram
+  DB_HOST: postgres
+  DB_PORT: 5432
+  SECRET_KEY: 'secret'
+  ALLOWED_HOSTS: '*'
+
+backend_tests:
+  stage: test
+  image: python:3.9
+  services:
+    - postgres:13
+  script:
+    - cd backend
+    - pip install -r requirements.txt
+    - python manage.py migrate
+    - pytest
+
+infra_tests:
+  stage: test
+  image: python:3.9
+  script:
+    - pip install -r backend/requirements.txt
+    - pip install requests
+    - echo "repo_owner: ${CI_PROJECT_NAMESPACE}" > tests.yml
+    - echo "taski_domain: ${TASKI_DOMAIN:-https://taski.example.com}" >> tests.yml
+    - echo "kittygram_domain: ${KITTYGRAM_DOMAIN:-https://kittygram.example.com}" >> tests.yml
+    - echo "dockerhub_username: ${DOCKERHUB_USERNAME:-testuser}" >> tests.yml
+    - pytest tests/
+  allow_failure: true

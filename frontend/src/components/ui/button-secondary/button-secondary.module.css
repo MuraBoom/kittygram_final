@@ -1,0 +1,43 @@
+.button {
+  border: 1px solid var(--logout-btn-border);
+  border-radius: var(--button-border-radius);
+  outline: none;
+  transition: var(--common-transition);
+  background: none;
+  padding: 8px 12px;
+  text-align: center;
+  background-color: var(--logout-btn-bgc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary-color);
+  min-width: 40px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:hover:enabled {
+  cursor: pointer;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-primary-color);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (max-width: 430px) {
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .button {
+    padding: 8px;
+  }
+}

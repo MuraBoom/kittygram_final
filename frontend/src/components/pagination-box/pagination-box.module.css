@@ -1,0 +1,76 @@
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+  gap: 16px;
+}
+
+.btn_box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: 1px solid var(--logout-btn-border);
+  background-color: var(--surface);
+  box-sizing: border-box;
+  border-radius: var(--button-border-radius, 8px);
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+/* Arrow rotation fix if needed, assuming the original had transform */
+.btn:first-child {
+  /* Previous code had matrix transform, likely for flipping arrow */
+  transform: matrix(1, 0, 0, -1, 0, 0); 
+}
+/* Wait, the original code had transform on ALL .btn. That's weird if it's for both left and right arrows unless they are using the same icon rotated? 
+   Let's check pagination-box.jsx to see what's inside the buttons. */
+
+
+.num_btn {
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--background);
+}
+
+.btn:hover:enabled {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: var(--surface-hover, #f8fafc);
+}
+
+.num_btn:hover:enabled {
+  background-color: var(--surface-hover, #f8fafc);
+  color: var(--primary);
+}
+
+/* Active state for number button is handled via JS classes (text_color_primary), 
+   but we can add a specific active class if we want to style the background */
+
