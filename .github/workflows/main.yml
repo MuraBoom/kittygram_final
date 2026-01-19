@@ -19,24 +19,26 @@ jobs:
         run: |
           cd backend
           pip install -r requirements.txt
-          pip install ruff pytest pytest-django
+          pip install ruff pytest pytest-django responses
       
       - name: Run ruff linter
         run: |
           ruff check ./backend --fix
       
-      - name: Run tests
+      - name: Run migrations (SQLite in-memory)
         run: |
           cd backend
-          # 1. Используем SQLite вместо PostgreSQL
-          export DATABASE_URL="sqlite:///test.db"
-          export SECRET_KEY="test123"
-          
-          # 2. Создаём фиктивные миграции (пропускаем проверку БД)
+          export DJANGO_SETTINGS_MODULE="kittygram_backend.settings_ci"
           python manage.py migrate --run-syncdb
-          
-          # 3. Запускаем ТОЛЬКО тесты которые проходят
-          pytest tests/test_files.py -v
+      
+      - name: Run ALL tests
+        run: |
+          cd backend
+          export DJANGO_SETTINGS_MODULE="kittygram_backend.settings_ci"
+          pytest tests/ -v --tb=short
+        env:
+          DOCKERHUB_USERNAME: testuser123
+          SECRET_KEY: test-secret-key-ci-123456
 
   build-images:
     needs: lint-and-test
@@ -47,8 +49,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Build Docker images
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build images
         run: |
           docker build -t kittygram_backend ./backend
           docker build -t kittygram_frontend ./frontend
           docker build -t kittygram_gateway ./nginx
+      
+      - name: Note about Docker Hub
+        run: |
+          echo "Для публикации в Docker Hub требуется:"
+          echo "1. Добавить DOCKERHUB_USERNAME и DOCKERHUB_TOKEN в Secrets"
+          echo "2. Раскомментировать docker login и docker push в workflow"
